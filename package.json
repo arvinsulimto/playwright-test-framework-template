@@ -1,0 +1,37 @@
+{
+  "name": "playwright-test-framework-template",
+  "version": "1.0.0",
+  "description": "Playwright test framework with Cucumber",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:headed": "HEADLESS=false cucumber-js",
+    "test:report": "cucumber-js --format html:cucumber-report.html",
+    "test:parallel": "cucumber-js --parallel 2",
+    "test:tags": "cucumber-js --tags",
+    "test:debug": "PWDEBUG=1 cucumber-js",
+    "test:watch": "nodemon --watch features --watch src -e feature,ts --exec cucumber-js",
+    "test:smoke": "cucumber-js --tags @smoke",
+    "test:regression": "cucumber-js --tags @regression",
+    "test:login": "cucumber-js --tags @login",
+    "test:failed": "cucumber-js --format rerun:@rerun.txt && cucumber-js @rerun.txt",
+    "clean": "rimraf cucumber-report.html cucumber-report.json screenshots/ videos/",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^10.9.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/cucumber": "^6.0.1",
+    "@types/node": "^20.17.30",
+    "nodemon": "^3.1.9",
+    "rimraf": "^5.0.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "main": "cucumber.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
