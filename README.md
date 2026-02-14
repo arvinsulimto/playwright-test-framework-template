@@ -43,8 +43,6 @@ npx playwright install chromium
 ├── features/                 # Cucumber feature files
 │   └── login.feature        # Login test scenarios
 ├── src/
-│   ├── config/             # Configuration management
-│   │   └── config.manager.ts
 │   ├── locators/           # Page element locators
 │   │   └── login.locators.ts
 │   ├── pages/              # Page Object Model
@@ -53,12 +51,14 @@ npx playwright install chromium
 │   ├── steps/             # Cucumber step definitions
 │   │   └── login.steps.ts
 │   ├── types/             # TypeScript type definitions
+│   │   ├── custom-world.ts
 │   │   ├── errors.ts
 │   │   ├── locator.types.ts
 │   │   └── page.types.ts
 │   └── utils/             # Utility classes
 │       ├── hooks.ts
 │       ├── logger.ts
+│       ├── page.factory.ts
 │       └── wait.strategy.ts
 ├── cucumber.js            # Cucumber configuration
 ├── package.json          # Project dependencies and scripts
@@ -84,11 +84,24 @@ Feature: Login to Sauce Demo
 
 ### Step Definitions
 
-Step definitions are written in TypeScript:
+Step definitions map the Gherkin steps to TypeScript code. They are located in `src/steps/`.
+
+Example (`src/steps/login.steps.ts`):
 ```typescript
+import { Given, When, Then } from '@cucumber/cucumber';
+import { LoginPage } from '../pages/login.page';
+import { page } from '../utils/hooks';
+
+let loginPage: LoginPage;
+
 Given('I am on the login page', async () => {
+    // Instantiate page object with the global page from hooks
     loginPage = new LoginPage(page);
     await loginPage.navigateTo();
+});
+
+When('I login with username {string} and password {string}', async (username: string, password: string) => {
+    await loginPage.login(username, password);
 });
 ```
 
