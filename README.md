@@ -129,20 +129,6 @@ npx cucumber-js
 ```bash
 export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm use 20 && npx cucumber-js
 ```
-
-### Available Scripts
-
-- `npm test`: Run all tests
-- `npm run test:headed`: Run tests with visible browser
-- `npm run test:report`: Generate HTML report
-- `npm run test:parallel`: Run tests in parallel
-- `npm run test:debug`: Run tests in debug mode
-- `npm run test:watch`: Run tests in watch mode
-- `npm run test:smoke`: Run smoke tests
-- `npm run test:regression`: Run regression tests
-- `npm run test:login`: Run login tests
-- `npm run test:failed`: Run failed tests
-
 ## Configuration
 
 ### Cucumber Configuration
