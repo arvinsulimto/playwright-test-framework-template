@@ -9,7 +9,7 @@
     "test:parallel": "cucumber-js --parallel 2",
     "test:tags": "cucumber-js --tags",
     "test:debug": "PWDEBUG=1 cucumber-js",
-    "test:watch": "nodemon --watch features --watch src -e feature,ts --exec cucumber-js",
+    "test:watch": "nodemon --watch src -e feature,ts --exec cucumber-js",
     "test:smoke": "cucumber-js --tags @smoke",
     "test:regression": "cucumber-js --tags @regression",
     "test:login": "cucumber-js --tags @login",
@@ -18,7 +18,7 @@
     "postinstall": "playwright install chromium"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^10.9.0",
+    "@cucumber/cucumber": "^12.6.0",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
