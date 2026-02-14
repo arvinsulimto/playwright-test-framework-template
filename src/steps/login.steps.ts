@@ -15,13 +15,9 @@ When('I login with username {string} and password {string}', async (username: st
 });
 
 Then('I should be logged in successfully', async () => {
-    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await loginPage.verifyLoginSuccess();
 });
 
 Then('I should see an error message {string}', async (expectedErrorMessage: string) => {
-    const isErrorVisible = await loginPage.isErrorMessageVisible();
-    expect(isErrorVisible).toBeTruthy();
-    
-    const actualErrorMessage = await loginPage.getErrorMessage();
-    expect(actualErrorMessage).toBe(expectedErrorMessage);
+    await loginPage.verifyErrorMessage(expectedErrorMessage);
 }); 

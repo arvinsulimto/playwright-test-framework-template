@@ -1,13 +1,7 @@
 import { Page, Locator, expect, Keyboard, Mouse } from '@playwright/test';
-import { PageLocators, LocatorType } from '../../types/locator.types';
-import { ConfigManager } from '../../config/config.manager';
+import { PageLocators } from '../../types/locator.types';
+
 import { 
-    IBasePage, 
-    IElementInteractions, 
-    IElementState, 
-    IKeyboardInteractions, 
-    IElementContent,
-    IPageState,
     BasePageInterface
 } from '../../types/page.types';
 import { Logger } from '../../utils/logger';
@@ -19,7 +13,6 @@ import {
     TimeoutError 
 } from '../../types/errors';
 
-const config = ConfigManager.getInstance();
 
 export abstract class BasePage implements BasePageInterface {
     public page: Page;
@@ -29,17 +22,15 @@ export abstract class BasePage implements BasePageInterface {
     protected defaultTimeout: number;
     protected logger: Logger;
     protected waitStrategy: WaitStrategy;
-    protected config: ConfigManager;
 
     constructor(page: Page) {
         this.page = page;
         this.locators = {};
         this.keyboard = page.keyboard;
         this.mouse = page.mouse;
-        this.defaultTimeout = config.getNumber('DEFAULT_TIMEOUT');
+        this.defaultTimeout = Number(process.env.DEFAULT_TIMEOUT) || 30000;
         this.logger = Logger.getInstance();
         this.waitStrategy = new WaitStrategy(page);
-        this.config = ConfigManager.getInstance();
     }
 
     abstract getLocators(): PageLocators;
@@ -143,12 +134,13 @@ export abstract class BasePage implements BasePageInterface {
      * @param url - URL to navigate to
      */
     public async navigateTo(): Promise<void> {
+        const baseUrl = process.env.BASE_URL || 'https://www.saucedemo.com';
         try {
-            await this.logger.info(`Navigating to ${this.config.get('BASE_URL') || 'https://www.tokopedia.com/'}`);
-            await this.page.goto(this.config.get('BASE_URL') || 'https://www.tokopedia.com/');
+            await this.logger.info(`Navigating to ${baseUrl}`);
+            await this.page.goto(baseUrl);
             await this.waitStrategy.waitForNavigation();
         } catch (error) {
-            this.logger.error(`Failed to navigate to ${this.config.get('BASE_URL') || 'https://www.tokopedia.com/'}`, error as Error);
+            this.logger.error(`Failed to navigate to ${baseUrl}`, error as Error);
             throw new NavigationError(`Failed to navigate: ${error}`);
         }
     }
@@ -213,9 +205,10 @@ export abstract class BasePage implements BasePageInterface {
      * @param name - Name of the screenshot file
      */
     public async takeScreenshot(name: string): Promise<void> {
+        const screenshotPath = process.env.SCREENSHOT_PATH || 'test-results/screenshots';
         try {
             this.logger.debug(`Taking screenshot: ${name}`);
-            await this.page.screenshot({ path: `${config.get('SCREENSHOT_PATH')}/${name}.png` });
+            await this.page.screenshot({ path: `${screenshotPath}/${name}.png` });
         } catch (error) {
             this.logger.error(`Failed to take screenshot ${name}`, error as Error);
             throw error;
