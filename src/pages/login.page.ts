@@ -16,9 +16,9 @@ export class LoginPage extends BasePage {
     }
 
     async login(username: string, password: string): Promise<void> {
-        await this.fill(this.getLocators().usernameInput.value, username);
-        await this.fill(this.getLocators().passwordInput.value, password);
-        await this.click(this.getLocators().loginButton.value);
+        await this.page.fill(this.getLocators().usernameInput.value, username);
+        await this.page.fill(this.getLocators().passwordInput.value, password);
+        await this.page.click(this.getLocators().loginButton.value);
     }
 
 
@@ -28,6 +28,6 @@ export class LoginPage extends BasePage {
     }
 
     async verifyErrorMessage(expectedMessage: string): Promise<void> {
-        await this.shouldContainText(this.getLocators().errorMessage.value, expectedMessage);
+        await expect(this.page.locator(this.getLocators().errorMessage.value)).toContainText(expectedMessage);
     }
 } 

@@ -1,7 +1,4 @@
 Feature: Login to Sauce Demo
-    As a user
-    I want to login to Sauce Demo
-    So that I can access the application
 
     Scenario: Successful login with valid credentials
         Given I am on the login page
