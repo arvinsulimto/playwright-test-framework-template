@@ -1,7 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
-import { page } from '../utils/hooks';
+import { page } from '../support/hooks';
 
 let loginPage: LoginPage;
 
@@ -15,9 +15,9 @@ When('I login with username {string} and password {string}', async (username: st
 });
 
 Then('I should be logged in successfully', async () => {
-    await loginPage.verifyLoginSuccess();
+    await expect(page).toHaveURL(/.*inventory.html/);
 });
 
 Then('I should see an error message {string}', async (expectedErrorMessage: string) => {
-    await loginPage.verifyErrorMessage(expectedErrorMessage);
+    await expect(loginPage.errorMessage).toContainText(expectedErrorMessage);
 }); 

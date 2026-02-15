@@ -17,7 +17,6 @@ A modern test automation framework built with Playwright and Cucumber.js for web
 
 - Node.js v20 or higher
 - npm (comes with Node.js)
-- nvm (Node Version Manager) - recommended
 
 ## Installation
 
@@ -43,23 +42,14 @@ npx playwright install chromium
 ├── features/                 # Cucumber feature files
 │   └── login.feature        # Login test scenarios
 ├── src/
-│   ├── locators/           # Page element locators
-│   │   └── login.locators.ts
 │   ├── pages/              # Page Object Model
 │   │   ├── base/          # Base page class
 │   │   └── login.page.ts  # Login page implementation
-│   ├── steps/             # Cucumber step definitions
+│   ├── step-definitions/  # Cucumber step definitions
 │   │   └── login.steps.ts
-│   ├── types/             # TypeScript type definitions
-│   │   ├── custom-world.ts
-│   │   ├── errors.ts
-│   │   ├── locator.types.ts
-│   │   └── page.types.ts
-│   └── utils/             # Utility classes
+│   └── support/           # Utility classes and types
 │       ├── hooks.ts
-│       ├── logger.ts
-│       ├── page.factory.ts
-│       └── wait.strategy.ts
+│       └── locator.types.ts
 ├── cucumber.js            # Cucumber configuration
 ├── package.json          # Project dependencies and scripts
 └── tsconfig.json         # TypeScript configuration
@@ -72,10 +62,6 @@ npx playwright install chromium
 Feature files are written in Gherkin syntax. Example:
 ```gherkin
 Feature: Login to Sauce Demo
-    As a user
-    I want to login to Sauce Demo
-    So that I can access the application
-
     Scenario: Successful login with valid credentials
         Given I am on the login page
         When I login with username "standard_user" and password "secret_sauce"
@@ -84,13 +70,14 @@ Feature: Login to Sauce Demo
 
 ### Step Definitions
 
-Step definitions map the Gherkin steps to TypeScript code. They are located in `src/steps/`.
+Step definitions map the Gherkin steps to TypeScript code. They are located in `src/step-definitions/`.
 
-Example (`src/steps/login.steps.ts`):
+Example (`src/step-definitions/login.steps.ts`):
 ```typescript
 import { Given, When, Then } from '@cucumber/cucumber';
+import { expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
-import { page } from '../utils/hooks';
+import { page } from '../support/hooks';
 
 let loginPage: LoginPage;
 
@@ -103,17 +90,25 @@ Given('I am on the login page', async () => {
 When('I login with username {string} and password {string}', async (username: string, password: string) => {
     await loginPage.login(username, password);
 });
+
+Then('I should be logged in successfully', async () => {
+    await expect(page).toHaveURL(/.*inventory.html/);
+});
 ```
 
 ### Page Objects
 
-Page objects follow the Page Object Model pattern:
+Page objects follow the Page Object Model pattern with inline locators:
 ```typescript
 export class LoginPage extends BasePage {
+    readonly usernameInput = this.page.locator('[data-test="username"]');
+    readonly passwordInput = this.page.locator('[data-test="password"]');
+    readonly loginButton = this.page.locator('[data-test="login-button"]');
+
     async login(username: string, password: string): Promise<void> {
-        await this.page.fill(this.getLocators().usernameInput.value, username);
-        await this.page.fill(this.getLocators().passwordInput.value, password);
-        await this.page.click(this.getLocators().loginButton.value);
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(password);
+        await this.loginButton.click();
     }
 }
 ```
@@ -125,10 +120,6 @@ export class LoginPage extends BasePage {
 npx cucumber-js
 ```
 
-### Run with Specific Node Version
-```bash
-export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm use 20 && npx cucumber-js
-```
 ## Configuration
 
 ### Cucumber Configuration
@@ -137,7 +128,7 @@ Configure test settings in `cucumber.js`:
 module.exports = {
     default: {
         requireModule: ['ts-node/register'],
-        require: ['src/steps/*.ts', 'src/utils/hooks.ts'],
+        require: ['src/step-definitions/*.ts', 'src/support/hooks.ts'],
         paths: ['features/*.feature'],
         format: ['progress-bar'],
         timeout: 60000
@@ -155,33 +146,22 @@ DEFAULT_TIMEOUT=30000
 ## Best Practices
 
 1. **Page Objects**
-   - Keep page objects focused on page-specific functionality
-   - Use the base page class for common functionality
-   - Implement proper error handling
+   - Keep page objects focused on element interaction and navigation
+   - **Do not** include assertions in Page Objects; return values or expose locators instead
+   - Use `readonly` properties for locators for lazy evaluation and better readability
+   - Use the base page class for shared context (like `page` fixture)
 
 2. **Locators**
-   - Use data-test attributes when possible
-   - Keep locators in separate files
-   - Add descriptions for better maintainability
+   - Use `data-test` attributes (e.g., `data-test="submit-button"`) for resilient selectors
+   - Define locators as public `readonly` properties in Page Objects
+   - Avoid generic selectors like `div > button`
 
 3. **Step Definitions**
-   - Keep steps reusable
-   - Use proper parameter types
-   - Implement proper error handling
+   - Keep steps focused on **User Intent** ("I login") rather than implementation details ("I click button")
+   - Perform **Assertions** here using `expect`
+   - Keep steps reusable and atomic
 
 4. **Test Organization**
-   - Group related scenarios in feature files
-   - Use tags for test categorization
-   - Keep scenarios independent
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 
+   - Step definitions should be in `src/step-definitions`
+   - Feature files should be in `features/`
+   - Tests should be independent and not rely on execution order

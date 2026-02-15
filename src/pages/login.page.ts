@@ -1,14 +1,14 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { BasePage } from './base/base.page';
-import { loginLocators } from '../locators/login.locators';
 
 export class LoginPage extends BasePage {
+    readonly usernameInput = this.page.locator('[data-test="username"]');
+    readonly passwordInput = this.page.locator('[data-test="password"]');
+    readonly loginButton = this.page.locator('[data-test="login-button"]');
+    readonly errorMessage = this.page.locator('[data-test="error"]');
+
     constructor(page: Page) {
         super(page);
-    }
-
-    getLocators() {
-        return loginLocators;
     }
 
     async navigateTo(): Promise<void> {
@@ -16,18 +16,9 @@ export class LoginPage extends BasePage {
     }
 
     async login(username: string, password: string): Promise<void> {
-        await this.page.fill(this.getLocators().usernameInput.value, username);
-        await this.page.fill(this.getLocators().passwordInput.value, password);
-        await this.page.click(this.getLocators().loginButton.value);
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(password);
+        await this.loginButton.click();
     }
 
-
-    async verifyLoginSuccess(): Promise<void> {
-        
-        await expect(this.page).toHaveURL(/inventory\.html/);
-    }
-
-    async verifyErrorMessage(expectedMessage: string): Promise<void> {
-        await expect(this.page.locator(this.getLocators().errorMessage.value)).toContainText(expectedMessage);
-    }
 } 
