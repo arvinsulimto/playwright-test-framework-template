@@ -16,7 +16,17 @@ Before(async function () {
   page = await context.newPage();
 });
 
-After(async function () {
+import { Status } from '@cucumber/cucumber';
+
+After(async function ({ result, pickle }) {
+  if (result?.status === Status.FAILED) {
+    const screenshot = await page.screenshot({ 
+      path: `./screenshots/${pickle.name}.png`, 
+      fullPage: true 
+    });
+    this.attach(screenshot, 'image/png');
+  }
+
   await page.close();
   await context.close();
   await browser.close();
