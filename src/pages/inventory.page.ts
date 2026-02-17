@@ -1,6 +1,8 @@
 import { BasePage } from './base/base.page';
 
 export class InventoryPage extends BasePage {
+    protected path = '/inventory.html';
+
     readonly cartBadge = this.page.locator('.shopping_cart_badge');
 
     async addItemToCart(itemName: string): Promise<void> {

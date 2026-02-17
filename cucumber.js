@@ -4,9 +4,8 @@ module.exports = {
     require: ['src/step-definitions/*.ts', 'src/support/hooks.ts'],
     paths: ['features/*.feature'],
     format: [
-      'progress-bar',
       'summary',
-      'allure-cucumberjs/reporter'
+      ['allure-cucumberjs/reporter', 'reports/allure-results/allure-output.txt']
     ],
     formatOptions: { 
       snippetInterface: 'async-await',

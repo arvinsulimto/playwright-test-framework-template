@@ -1,16 +1,17 @@
 # Playwright Test Framework with Cucumber
 
-A modern test automation framework built with Playwright and Cucumber.js for web application testing, featuring comprehensive Allure reporting and AI agent integration capabilities.
+A modern test automation framework built with Playwright and Cucumber.js for web application testing, featuring comprehensive Allure reporting.
 
 ## Features
 
 - 🎭 **Playwright** for reliable browser automation
 - 🥒 **Cucumber.js** for BDD-style test writing
 - 📝 **TypeScript** for type safety and better development experience
-- 🏗️ **Page Object Model** design pattern
+- 🏗️ **Page Object Model** design pattern with subpage navigation
 - 📊 **Allure Reporting** with historical data and trend analysis
 - 🔄 **GitHub Actions** workflow for CI and GitHub Pages deployment
-- 🔧 **Easy configuration** management
+- 🔧 **Easy configuration** via `.env` file
+- 🧹 **ESLint + Prettier** for code quality and consistent formatting
 
 ## Prerequisites
 
@@ -40,16 +41,37 @@ A modern test automation framework built with Playwright and Cucumber.js for web
 ```
 ├── .github/workflows/    # CI/CD workflows
 ├── features/             # Cucumber feature files
-│   └── login.feature     # Login test scenarios
-├── reports/              # Test reports (Allure results and report)
+│   ├── login.feature     # Login test scenarios
+│   └── cart.feature      # Cart test scenarios
+├── reports/              # Test reports (Allure results, screenshots, videos)
 ├── src/
 │   ├── pages/            # Page Object Model
+│   │   ├── base/         # Base page with shared navigation
+│   │   ├── login.page.ts
+│   │   ├── inventory.page.ts
+│   │   └── cart.page.ts
 │   ├── step-definitions/ # Cucumber step definitions
-│   └── support/          # Utility classes, hooks, and types
+│   └── support/          # Hooks (browser setup/teardown)
 ├── cucumber.js           # Cucumber configuration
+├── eslint.config.mjs     # ESLint configuration
+├── .prettierrc           # Prettier configuration
 ├── package.json          # Project dependencies and scripts
 └── tsconfig.json         # TypeScript configuration
 ```
+
+## Configuration
+
+Environment variables are managed in `.env`:
+
+| Variable | Description | Default |
+|---|---|---|
+| `BASE_URL` | Application base URL | `https://www.saucedemo.com` |
+| `HEADLESS` | Run browser in headless mode | `true` |
+| `SLOW_MO` | Slow down operations (ms) | `0` |
+| `DEFAULT_TIMEOUT` | Default action timeout (ms) | `30000` |
+| `NAVIGATION_TIMEOUT` | Navigation timeout (ms) | `60000` |
+| `REPORT_PATH` | Directory for report artifacts | `./reports` |
+| `SCREENSHOT_PATH` | Directory for failure screenshots | `./reports/screenshots` |
 
 ## Running Tests
 
@@ -61,15 +83,10 @@ npm test
 This command runs the tests, generates the Allure report, and hints how to view it.
 
 ### Specific Test Modes
-- **Headless Mode** (Default is headed):
-  ```bash
-  HEADLESS=true npm test
-  ```
-- **Headed Mode**:
+- **Headed Mode** (browser visible):
   ```bash
   npm run test:headed
   ```
-
 - **Parallel Execution**:
   ```bash
   npm run test:parallel
@@ -77,6 +94,11 @@ This command runs the tests, generates the Allure report, and hints how to view 
 - **Debug Mode**:
   ```bash
   npm run test:debug
+  ```
+- **By Tag**:
+  ```bash
+  npm run test:smoke
+  npm run test:regression
   ```
 
 ### CI Environment
@@ -111,54 +133,23 @@ This repository is configured to automatically deploy Allure reports into **GitH
 1. Ensure your repository has a `gh-pages` branch (create as orphan if missing).
 2. Enable GitHub Pages in Repository Settings -> Pages, pointing to `gh-pages` branch / root.
 
-## GitHub Actions Workflow
+## Code Quality
 
-The CI/CD pipeline is defined in `.github/workflows/playwright.yml`.
-
-### Workflow Structure
-The workflow consists of a single job `test` with the following steps:
-1. **Checkout Code**: Fetches the repository.
-2. **Setup Node**: Installs Node.js (v20).
-3. **Install Dependencies**: Runs `npm ci`.
-4. **Install Browsers**: Installs Playwright browsers.
-5. **Run Tests**: Executes `npm run test:ci`.
-6. **Generate Report**: Uses `simple-elf/allure-report-action` to generate history.
-7. **Deploy**: Pushes the report to `gh-pages` branch.
-
-### Configuration
-You can customize the workflow by editing `.github/workflows/playwright.yml`:
-
-- **Triggers**: By default, it runs on `push` and `pull_request` to `main`/`master`.
-  ```yaml
-  on:
-    push:
-      branches: [ main, master ]
-    schedule:
-      - cron: '0 0 * * *' # Run daily at midnight
-  ```
-
-- **Environment Variables**: Add secrets or env vars if needed.
-  ```yaml
-  env:
-    BASE_URL: ${{ secrets.BASE_URL }}
-    HEADLESS: true
-  ```
-
-
-## MCP Server (Model Context Protocol)
-
-This framework includes an MCP server that allows AI agents to interact with the test suite.
-
-### Starting the Server
+### Linting
 ```bash
-npm run mcp:start
+npm run lint          # Check for issues
+npm run lint:fix      # Auto-fix issues
 ```
-This starts a Stdio server that agents can connect to for discovering and running tests programmatically.
+
+### Formatting
+```bash
+npm run format        # Format all source files
+```
 
 ## Writing Tests
 
 ### Feature Files
-Located in `features/`. written in Gherkin syntax.
+Located in `features/`, written in Gherkin syntax.
 ```gherkin
 Feature: Login to Sauce Demo
     Scenario: Successful login
@@ -168,9 +159,11 @@ Feature: Login to Sauce Demo
 ```
 
 ### Page Objects
-Located in `src/pages/`. Follows the Page Object Model pattern.
+Located in `src/pages/`. Follows the Page Object Model pattern with per-page `path` navigation.
 ```typescript
 export class LoginPage extends BasePage {
+    protected path = '/';
+
     readonly usernameInput = this.page.locator('[data-test="username"]');
     // ... actions
 }
@@ -179,6 +172,7 @@ export class LoginPage extends BasePage {
 ## Best Practices
 
 1. **Page Objects**: Keep them focused on interactions and locators. No assertions inside POs.
-2. **Step Definitions**: handle business logic and assertions (`expect`).
+2. **Step Definitions**: Handle business logic and assertions (`expect`).
 3. **Locators**: Prefer `data-test` attributes for resilience.
 4. **Hooks**: Use `src/support/hooks.ts` for setup/teardown (browser launch, video recording configuration).
+5. **Paths**: Set `protected path` in each page object for proper subpage navigation.
