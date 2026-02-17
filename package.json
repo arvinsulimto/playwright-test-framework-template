@@ -6,7 +6,6 @@
     "test": "cucumber-js; npm run report:generate --silent; echo \"\nRun 'npm run report:open' to view report\"",
     "test:ci": "cucumber-js; status=$?; npm run report:generate --silent; exit $status",
     "test:headed": "HEADLESS=false cucumber-js; npm run report:generate --silent; echo \"\nRun 'npm run report:open' to view report\"",
-    "test:report": "cucumber-js --format html:cucumber-report.html",
     "test:parallel": "cucumber-js --parallel 2",
     "test:tags": "cucumber-js --tags",
     "test:debug": "PWDEBUG=1 cucumber-js",
@@ -15,7 +14,6 @@
     "test:regression": "cucumber-js --tags @regression",
     "test:login": "cucumber-js --tags @login",
     "test:failed": "cucumber-js --format rerun:@rerun.txt && cucumber-js @rerun.txt",
-    "clean": "rimraf cucumber-report.html cucumber-report.json screenshots/ videos/",
     "report:generate": "allure generate allure-results --clean -o allure-report",
     "report:open": "allure open allure-report",
     "postinstall": "playwright install chromium"

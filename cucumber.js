@@ -5,12 +5,13 @@ module.exports = {
     paths: ['features/*.feature'],
     format: [
       'progress-bar',
-      'allure-cucumberjs/reporter',
-      'summary'
+      'summary',
+      'allure-cucumberjs/reporter'
     ],
     formatOptions: { 
       snippetInterface: 'async-await',
-      externalAttachments: true
+      externalAttachments: true,
+      resultsDir: 'allure-results'
     },
     worldParameters: {
       headless: process.env.HEADLESS !== 'false'
