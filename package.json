@@ -4,6 +4,7 @@
   "description": "Playwright test framework with Cucumber",
   "scripts": {
     "test": "cucumber-js; npm run report:generate --silent; echo \"\nRun 'npm run report:open' to view report\"",
+    "clean": "rimraf cucumber-report.html cucumber-report.json reports/ allure-results/ allure-report/ screenshots/ videos/",
     "test:ci": "cucumber-js; status=$?; npm run report:generate --silent; exit $status",
     "test:headed": "HEADLESS=false cucumber-js; npm run report:generate --silent; echo \"\nRun 'npm run report:open' to view report\"",
     "test:parallel": "cucumber-js --parallel 2",
@@ -14,8 +15,8 @@
     "test:regression": "cucumber-js --tags @regression",
     "test:login": "cucumber-js --tags @login",
     "test:failed": "cucumber-js --format rerun:@rerun.txt && cucumber-js @rerun.txt",
-    "report:generate": "allure generate allure-results --clean -o allure-report",
-    "report:open": "allure open allure-report",
+    "report:generate": "allure generate reports/allure-results --clean -o reports/allure-report",
+    "report:open": "allure open reports/allure-report",
     "postinstall": "playwright install chromium"
   },
   "dependencies": {

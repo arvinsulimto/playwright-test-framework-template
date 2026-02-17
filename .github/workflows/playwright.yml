@@ -35,16 +35,15 @@ jobs:
       uses: simple-elf/allure-report-action@master
       if: always()
       with:
-        allure_results: allure-results
+        allure_results: reports/allure-results
         gh_pages: gh-pages
-        allure_report: allure-report
+        allure_report: reports/allure-report
         allure_history: allure-history
 
     - name: Deploy report to Github Pages
       if: always()
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
         publish_dir: allure-history

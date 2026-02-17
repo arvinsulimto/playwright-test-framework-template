@@ -10,8 +10,7 @@ module.exports = {
     ],
     formatOptions: { 
       snippetInterface: 'async-await',
-      externalAttachments: true,
-      resultsDir: 'allure-results'
+      resultsDir: 'reports/allure-results'
     },
     worldParameters: {
       headless: process.env.HEADLESS !== 'false'
