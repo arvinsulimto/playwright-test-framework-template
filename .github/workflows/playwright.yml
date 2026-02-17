@@ -40,15 +40,6 @@ jobs:
         allure_report: reports/allure-report
         allure_history: allure-history
 
-    - name: Debug - List Report Files
-      if: always()
-      run: |
-        echo "Listing reports/allure-results:"
-        ls -R reports/allure-results || echo "reports/allure-results not found"
-        echo "Listing allure-history:"
-        ls -R allure-history || echo "allure-history not found"
-
-
     - name: Deploy report to Github Pages
       if: always()
       uses: peaceiris/actions-gh-pages@v3
