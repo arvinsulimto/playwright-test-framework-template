@@ -4,12 +4,15 @@ export class InventoryPage extends BasePage {
     protected path = '/inventory.html';
 
     readonly cartBadge = this.page.locator('.shopping_cart_badge');
+    readonly shoppingCartLink = this.page.locator('.shopping_cart_link');
 
     async addItemToCart(itemName: string): Promise<void> {
-        // SauceDemo uses data-test attributes like "add-to-cart-sauce-labs-backpack"
-        // format: add-to-cart-{kebab-case-item-name}
         const kebabName = itemName.toLowerCase().replace(/ /g, '-');
         const selector = `[data-test="add-to-cart-${kebabName}"]`;
         await this.page.locator(selector).click();
+    }
+
+    async clickShoppingCartLink() {
+        await this.shoppingCartLink.click();
     }
 }

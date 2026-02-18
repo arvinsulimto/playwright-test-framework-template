@@ -1,11 +1,15 @@
 import { Page } from '@playwright/test';
+import { HamburgerMenu } from '../hamburger.menu';
 
 export abstract class BasePage {
     public page: Page;
     protected path: string = '/';
 
+    public hamburgerMenu: HamburgerMenu;
+
     constructor(page: Page) {
         this.page = page;
+        this.hamburgerMenu = new HamburgerMenu(page);
     }
 
     public async navigateTo(): Promise<void> {
