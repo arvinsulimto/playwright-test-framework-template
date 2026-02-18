@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","724","Failed login with invalid credentials","","Wed Feb 18 15:35:02 UTC 2026","passed","Wed Feb 18 15:35:03 UTC 2026","","","",""
+"","2011","Goto about page","","Wed Feb 18 15:34:59 UTC 2026","passed","Wed Feb 18 15:35:01 UTC 2026","","","",""
+"","1981","Add a single item to the cart","","Wed Feb 18 15:34:56 UTC 2026","passed","Wed Feb 18 15:34:58 UTC 2026","","","",""
+"","904","Add a single item to the cart","","Wed Feb 18 15:34:58 UTC 2026","passed","Wed Feb 18 15:34:59 UTC 2026","","","",""
+"","874","Successful login with valid credentials","","Wed Feb 18 15:35:01 UTC 2026","passed","Wed Feb 18 15:35:02 UTC 2026","","","",""
+"","733","Failed login with locked out user","","Wed Feb 18 15:35:03 UTC 2026","passed","Wed Feb 18 15:35:03 UTC 2026","","","",""
