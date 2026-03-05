@@ -1,0 +1,8 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","2390","Add a single item to the cart","","Thu Mar 05 15:57:21 UTC 2026","passed","Thu Mar 05 15:57:23 UTC 2026","","","",""
+"","895","Add a single item to the cart","","Thu Mar 05 15:57:23 UTC 2026","passed","Thu Mar 05 15:57:24 UTC 2026","","","",""
+"","1914","Goto about page","","Thu Mar 05 15:57:24 UTC 2026","passed","Thu Mar 05 15:57:26 UTC 2026","","","",""
+"","701","Failed login with invalid credentials","","Thu Mar 05 15:57:28 UTC 2026","passed","Thu Mar 05 15:57:28 UTC 2026","","","",""
+"","752","Successful login with valid credentials","","Thu Mar 05 15:57:27 UTC 2026","passed","Thu Mar 05 15:57:28 UTC 2026","","","",""
+"","843","Order products by price from low to high","","Thu Mar 05 15:57:26 UTC 2026","passed","Thu Mar 05 15:57:27 UTC 2026","","","",""
+"","701","Failed login with locked out user","","Thu Mar 05 15:57:28 UTC 2026","passed","Thu Mar 05 15:57:29 UTC 2026","","","",""
