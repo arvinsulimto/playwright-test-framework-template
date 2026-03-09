@@ -31,11 +31,6 @@ A modern test automation framework built with Playwright and Cucumber.js for web
    npm install
    ```
 
-3. Install Playwright browsers:
-   ```bash
-   npx playwright install chromium
-   ```
-
 ## Project Structure
 
 ```
@@ -78,33 +73,7 @@ Environment variables are managed in `.env`:
 ### Standard Test Run
 Run all tests:
 ```bash
-npm test
-```
-This command runs the tests, generates the Allure report, and hints how to view it.
-
-### Specific Test Modes
-- **Headed Mode** (browser visible):
-  ```bash
-  npm run test:headed
-  ```
-- **Parallel Execution**:
-  ```bash
-  npm run test:parallel
-  ```
-- **Debug Mode**:
-  ```bash
-  npm run test:debug
-  ```
-- **By Tag**:
-  ```bash
-  npm run test:smoke
-  npm run test:regression
-  ```
-
-### CI Environment
-The CI command ensures proper exit codes and silent report generation:
-```bash
-npm run test:ci
+npm run test
 ```
 
 ## Reporting
@@ -133,20 +102,6 @@ This repository is configured to automatically deploy Allure reports into **GitH
 1. Ensure your repository has a `gh-pages` branch (create as orphan if missing).
 2. Enable GitHub Pages in Repository Settings -> Pages, pointing to `gh-pages` branch / root.
 
-## Code Quality
-
-### Linting
-```bash
-npm run lint          # Check for issues
-npm run lint:fix      # Auto-fix issues
-```
-
-### Formatting
-```bash
-npm run format        # Format all source files
-```
-
-## Writing Tests
 
 ### Feature Files
 Located in `features/`, written in Gherkin syntax.
