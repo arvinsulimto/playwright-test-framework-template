@@ -3,6 +3,7 @@ module.exports = {
     requireModule: ['ts-node/register'],
     require: ['src/step-definitions/*.ts', 'src/support/hooks.ts'],
     paths: ['features/*.feature'],
+    parallel: 1,
     format: [
       'summary',
       ['allure-cucumberjs/reporter', 'reports/allure-results/allure-output.txt']

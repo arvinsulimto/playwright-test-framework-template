@@ -18,14 +18,6 @@ export class InventoryPage extends BasePage {
         await this.shoppingCartLink.click();
     }
 
-    /**
-     * Sorts products using the dropdown on the inventory page.
-     * @param sortValue - The option value from SauceDemo dropdown:
-     *   'az'   = Name (A to Z)
-     *   'za'   = Name (Z to A)
-     *   'lohi' = Price (low to high)
-     *   'hilo' = Price (high to low)
-     */
     async sortProducts(sortValue: string): Promise<void> {
         await this.sortDropdown.selectOption(sortValue);
     }

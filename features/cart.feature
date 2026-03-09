@@ -1,8 +1,9 @@
+@cart
 Feature: Add to Cart
 
   Background:
     Given I am on the login page
-    And I login with username "standard_user" and password "secret_sauce"
+    When I login with username "standard_user" and password "secret_sauce"
 
   Scenario Outline: Add a single item to the cart
     When I add "<item_name>" to the cart
